@@ -15,6 +15,7 @@ import {
   Grow,
   Paper,
   Divider,
+  IconButton,
 } from '@mui/material';
 import {
   AccountBalance,
@@ -27,6 +28,7 @@ import {
   ArrowForward,
   Notifications,
   Security,
+  RequestQuote,
 } from '@mui/icons-material';
 import type { Policy, CustomerAction } from '../types/policy';
 import { policyApi, actionApi } from '../services/mockApi';
@@ -94,6 +96,12 @@ const Dashboard = () => {
       default:
         return 'info';
     }
+  };
+
+  const handleIllustrationRequest = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
+    const illustrationUrl = 'https://illustrations-ui.dev-1.hub-1.illus-dev.assure.dxc.com/index.html?type=UniversalLifeProducts&id=31fb4f17-ad3d-4f8f-9caa-e6e4f32322b1#/';
+    window.open(illustrationUrl, '_blank');
   };
 
   const formatCurrency = (amount: number) => {
@@ -442,11 +450,28 @@ const Dashboard = () => {
                           </Box>
                         </Stack>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mt: 3, color: iconColor }}>
-                          <Typography variant="body2" fontWeight={600} sx={{ mr: 0.5 }}>
-                            View Details
-                          </Typography>
-                          <ArrowForward sx={{ fontSize: 18 }} />
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 3 }}>
+                          {policy.type === 'life' && (
+                            <IconButton
+                              size="small"
+                              onClick={handleIllustrationRequest}
+                              sx={{
+                                bgcolor: iconColor + '20',
+                                color: iconColor,
+                                '&:hover': {
+                                  bgcolor: iconColor + '30',
+                                },
+                              }}
+                            >
+                              <RequestQuote fontSize="small" />
+                            </IconButton>
+                          )}
+                          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', color: iconColor }}>
+                            <Typography variant="body2" fontWeight={600} sx={{ mr: 0.5 }}>
+                              View Details
+                            </Typography>
+                            <ArrowForward sx={{ fontSize: 18 }} />
+                          </Box>
                         </Box>
                       </CardContent>
                     </CardActionArea>
