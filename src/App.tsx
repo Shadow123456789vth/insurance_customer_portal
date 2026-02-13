@@ -18,7 +18,7 @@ import {
   useMediaQuery,
   Button,
 } from '@mui/material';
-import { Person, ContactPhone, Menu as MenuIcon, Dashboard as DashboardIcon, Assignment } from '@mui/icons-material';
+import { Person, ContactPhone, Dashboard as DashboardIcon, Assignment, LocalHospital, Event, Calculate, KeyboardArrowDown } from '@mui/icons-material';
 import { theme } from './theme';
 import Dashboard from './pages/DashboardPremium';
 import PolicyDetails from './pages/PolicyDetailsPremium';
@@ -31,7 +31,6 @@ import Emergency from './pages/Emergency';
 import BloomLogo from './components/BloomLogo';
 import ContactPreferences from './components/ContactPreferences';
 import CareOptionsModal from './components/CareOptionsModal';
-import Sidebar from './components/Sidebar';
 import { AnnualEnrollmentBanner } from './components/AnnouncementBanner';
 
 function AppContent() {
@@ -40,10 +39,10 @@ function AppContent() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [servicesAnchorEl, setServicesAnchorEl] = useState<null | HTMLElement>(null);
   const [isContactPreferencesOpen, setIsContactPreferencesOpen] = useState(false);
   const [careOptionsModalOpen, setCareOptionsModalOpen] = useState(false);
   const [showAnnualEnrollmentBanner, setShowAnnualEnrollmentBanner] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -55,6 +54,14 @@ function AppContent() {
     setAnchorEl(null);
   };
 
+  const handleServicesMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setServicesAnchorEl(event.currentTarget);
+  };
+
+  const handleServicesMenuClose = () => {
+    setServicesAnchorEl(null);
+  };
+
   const handleContactPreferencesOpen = () => {
     setIsContactPreferencesOpen(true);
     handleMenuClose();
@@ -62,6 +69,17 @@ function AppContent() {
 
   const handleFindCareClick = () => {
     setCareOptionsModalOpen(true);
+    handleServicesMenuClose();
+  };
+
+  const handleNavigateToAppointments = () => {
+    navigate('/my-appointments');
+    handleServicesMenuClose();
+  };
+
+  const handleNavigateToCalculator = () => {
+    navigate('/coverage-calculator');
+    handleServicesMenuClose();
   };
 
   const handleViewPolicy = () => {
@@ -100,23 +118,6 @@ function AppContent() {
             minHeight: { xs: 56, sm: 64 },
             gap: { xs: 2, sm: 3, md: 4 },
           }}>
-            {/* Mobile Hamburger Menu */}
-            {isMobile && (
-              <IconButton
-                color="inherit"
-                onClick={() => setSidebarOpen(true)}
-                sx={{
-                  minWidth: 44,
-                  minHeight: 44,
-                  '&:focus': {
-                    outline: 'none',
-                  },
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-
             {/* Logo and Brand */}
             <Box display="flex" alignItems="center" gap={1.5} component={Link} to="/" sx={{ textDecoration: 'none', flex: 1 }}>
               <Box sx={{ width: { xs: 28, sm: 36 }, height: { xs: 28, sm: 36 } }}>
@@ -136,51 +137,66 @@ function AppContent() {
               </Typography>
             </Box>
 
-            {/* Right Side: Navigation + User Avatar */}
+            {/* Right Side: Navigation + Services Dropdown + User Avatar */}
             <Box display="flex" alignItems="center" gap={1}>
-              {/* Desktop Navigation - Dashboard & Actions */}
-              {!isMobile && (
-                <>
-                  <Button
-                    component={Link}
-                    to="/"
-                    startIcon={<DashboardIcon />}
-                    sx={{
-                      color: 'inherit',
-                      fontWeight: isActive('/') ? 700 : 500,
-                      borderBottom: isActive('/') ? '2px solid' : '2px solid transparent',
-                      borderColor: 'primary.main',
-                      borderRadius: 0,
-                      px: 2,
-                      minHeight: 44,
-                      '&:focus': {
-                        outline: 'none',
-                      },
-                    }}
-                  >
-                    Dashboard
-                  </Button>
-                  <Button
-                    component={Link}
-                    to="/actions"
-                    startIcon={<Assignment />}
-                    sx={{
-                      color: 'inherit',
-                      fontWeight: isActive('/actions') ? 700 : 500,
-                      borderBottom: isActive('/actions') ? '2px solid' : '2px solid transparent',
-                      borderColor: 'primary.main',
-                      borderRadius: 0,
-                      px: 2,
-                      minHeight: 44,
-                      '&:focus': {
-                        outline: 'none',
-                      },
-                    }}
-                  >
-                    Actions
-                  </Button>
-                </>
-              )}
+              {/* Dashboard & Actions */}
+              <Button
+                component={Link}
+                to="/"
+                startIcon={<DashboardIcon />}
+                sx={{
+                  color: 'inherit',
+                  fontWeight: isActive('/') ? 700 : 500,
+                  borderBottom: isActive('/') ? '2px solid' : '2px solid transparent',
+                  borderColor: 'primary.main',
+                  borderRadius: 0,
+                  px: 2,
+                  minHeight: 44,
+                  display: { xs: 'none', sm: 'flex' },
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                }}
+              >
+                Dashboard
+              </Button>
+              <Button
+                component={Link}
+                to="/actions"
+                startIcon={<Assignment />}
+                sx={{
+                  color: 'inherit',
+                  fontWeight: isActive('/actions') ? 700 : 500,
+                  borderBottom: isActive('/actions') ? '2px solid' : '2px solid transparent',
+                  borderColor: 'primary.main',
+                  borderRadius: 0,
+                  px: 2,
+                  minHeight: 44,
+                  display: { xs: 'none', sm: 'flex' },
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                }}
+              >
+                Actions
+              </Button>
+
+              {/* Services Dropdown */}
+              <Button
+                onClick={handleServicesMenuOpen}
+                endIcon={<KeyboardArrowDown />}
+                sx={{
+                  color: 'inherit',
+                  fontWeight: 500,
+                  px: 2,
+                  minHeight: 44,
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                }}
+              >
+                Services
+              </Button>
 
               {/* User Avatar */}
               <IconButton
@@ -231,6 +247,82 @@ function AppContent() {
                   <ListItemText>Contact Preferences</ListItemText>
                 </MenuItem>
               </Menu>
+
+              {/* Services Menu */}
+              <Menu
+                anchorEl={servicesAnchorEl}
+                open={Boolean(servicesAnchorEl)}
+                onClose={handleServicesMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                PaperProps={{
+                  sx: {
+                    mt: 1,
+                    minWidth: 240,
+                  },
+                }}
+              >
+                <MenuItem
+                  onClick={handleFindCareClick}
+                  sx={{
+                    py: 1.5,
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <LocalHospital fontSize="small" sx={{ color: '#2e7d32' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Find Care"
+                    secondary="Search for providers"
+                    secondaryTypographyProps={{ variant: 'caption' }}
+                  />
+                </MenuItem>
+                <MenuItem
+                  onClick={handleNavigateToAppointments}
+                  sx={{
+                    py: 1.5,
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <Event fontSize="small" sx={{ color: '#9c27b0' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="My Appointments"
+                    secondary="View appointments"
+                    secondaryTypographyProps={{ variant: 'caption' }}
+                  />
+                </MenuItem>
+                <MenuItem
+                  onClick={handleNavigateToCalculator}
+                  sx={{
+                    py: 1.5,
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <Calculate fontSize="small" sx={{ color: '#d32f2f' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Coverage Calculator"
+                    secondary="Calculate coverage"
+                    secondaryTypographyProps={{ variant: 'caption' }}
+                  />
+                </MenuItem>
+              </Menu>
             </Box>
           </Toolbar>
         </Container>
@@ -245,24 +337,15 @@ function AppContent() {
         />
       )}
 
-      {/* Main Content Area with Sidebar */}
-      <Box sx={{ display: 'flex', flex: 1 }}>
-        {/* Sidebar */}
-        <Sidebar
-          onFindCareClick={handleFindCareClick}
-          mobileOpen={sidebarOpen}
-          onMobileClose={() => setSidebarOpen(false)}
-        />
-
-        {/* Main Content */}
-        <Box
-          component="main"
-          sx={{
-            flex: 1,
-            bgcolor: 'background.default',
-            minHeight: 'calc(100vh - 64px)',
-          }}
-        >
+      {/* Main Content */}
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          bgcolor: 'background.default',
+          minHeight: 'calc(100vh - 64px)',
+        }}
+      >
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/find-care" element={<FindCare />} />
@@ -274,7 +357,6 @@ function AppContent() {
             <Route path="/illustration/:id" element={<IllustrationDetails />} />
           </Routes>
         </Box>
-      </Box>
 
       {/* Footer */}
       <Box
