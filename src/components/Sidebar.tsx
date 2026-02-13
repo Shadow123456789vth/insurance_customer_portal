@@ -17,7 +17,6 @@ import {
   LocalHospital,
   Calculate,
   Event,
-  ArrowForwardIos,
   Menu as MenuLinesIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -36,7 +35,7 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // Start minimized
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -130,26 +129,21 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
       )}
 
       {/* Menu Items */}
-      <List sx={{ flex: 1, p: collapsed ? 1 : 2 }}>
-        {menuItems.map((item, index) => (
+      <List sx={{ flex: 1, p: 2 }}>
+        {menuItems.map((item) => (
           <ListItemButton
             key={item.path}
             onClick={() => handleItemClick(item)}
             sx={{
-              mb: 1.5,
-              borderRadius: 2,
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              bgcolor: isActive(item.path) ? alpha(item.color, 0.1) : 'transparent',
-              border: '1px solid',
-              borderColor: isActive(item.path) ? item.color : 'transparent',
+              mb: 1,
+              borderRadius: 1,
+              minHeight: 48,
               justifyContent: collapsed ? 'center' : 'flex-start',
-              px: collapsed ? 0 : 2,
+              px: collapsed ? 1 : 2,
+              position: 'relative',
+              bgcolor: isActive(item.path) ? alpha(item.color, 0.08) : 'transparent',
               '&:hover': {
-                bgcolor: alpha(item.color, 0.08),
-                transform: collapsed ? 'scale(1.05)' : 'translateX(4px)',
-                borderColor: alpha(item.color, 0.3),
+                bgcolor: isActive(item.path) ? alpha(item.color, 0.12) : 'action.hover',
               },
               '&::before': {
                 content: '""',
@@ -157,10 +151,10 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
                 left: 0,
                 top: 0,
                 bottom: 0,
-                width: 4,
+                width: 3,
                 bgcolor: item.color,
                 opacity: isActive(item.path) ? 1 : 0,
-                transition: 'opacity 0.3s',
+                borderRadius: '0 2px 2px 0',
               },
             }}
           >
@@ -170,23 +164,16 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
                 alignItems: 'center',
                 gap: 2,
                 width: '100%',
-                py: 1,
               }}
             >
-              {/* Icon Container */}
+              {/* Icon */}
               <Box
                 sx={{
-                  width: 40,
-                  height: 40,
+                  color: item.color,
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 2,
-                  bgcolor: isActive(item.path) ? item.color : alpha(item.color, 0.1),
-                  color: isActive(item.path) ? 'white' : item.color,
-                  transition: 'all 0.3s',
                   '& svg': {
-                    fontSize: 20,
+                    fontSize: 22,
                   },
                 }}
               >
@@ -195,30 +182,15 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
 
               {/* Label - Hidden when collapsed */}
               {!collapsed && (
-                <>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography
-                      variant="body2"
-                      fontWeight={isActive(item.path) ? 700 : 600}
-                      sx={{
-                        color: isActive(item.path) ? item.color : 'text.primary',
-                        transition: 'all 0.3s',
-                      }}
-                    >
-                      {item.label}
-                    </Typography>
-                  </Box>
-
-                  {/* Arrow Indicator */}
-                  <ArrowForwardIos
-                    sx={{
-                      fontSize: 14,
-                      color: item.color,
-                      opacity: isActive(item.path) ? 1 : 0,
-                      transition: 'opacity 0.3s',
-                    }}
-                  />
-                </>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: isActive(item.path) ? 600 : 400,
+                    color: 'text.primary',
+                  }}
+                >
+                  {item.label}
+                </Typography>
               )}
             </Box>
           </ListItemButton>
@@ -232,25 +204,11 @@ const Sidebar = ({ onFindCareClick, mobileOpen = false, onMobileClose }: Sidebar
             p: 2,
             borderTop: '1px solid',
             borderColor: 'divider',
-            bgcolor: alpha(theme.palette.primary.main, 0.02),
           }}
         >
-          <Box
-            sx={{
-              p: 2,
-              borderRadius: 2,
-              bgcolor: alpha(theme.palette.primary.main, 0.08),
-              border: '1px dashed',
-              borderColor: theme.palette.primary.main,
-            }}
-          >
-            <Typography variant="caption" fontWeight={600} color="primary" display="block" gutterBottom>
-              Need Help?
-            </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-              Contact our support team for assistance
-            </Typography>
-          </Box>
+          <Typography variant="caption" color="text.secondary" display="block">
+            Need help? Contact support
+          </Typography>
         </Box>
       )}
     </Box>
