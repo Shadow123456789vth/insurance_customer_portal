@@ -287,7 +287,7 @@ const Dashboard = () => {
           </Paper>
         </Grow>
 
-        {/* Pending Actions */}
+        {/* To-Do Items */}
         {pendingActions.length > 0 && (
           <Box mb={5}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
