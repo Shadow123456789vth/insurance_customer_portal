@@ -16,12 +16,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { Dashboard as DashboardIcon, Assignment, Person, ContactPhone } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, Assignment, Person, ContactPhone, Calculate } from '@mui/icons-material';
 import { theme } from './theme';
 import Dashboard from './pages/DashboardPremium';
 import PolicyDetails from './pages/PolicyDetailsPremium';
 import Actions from './pages/Actions';
 import IllustrationDetails from './pages/IllustrationDetails';
+import CoverageCalculatorPage from './pages/CoverageCalculatorPage';
 import BloomLogo from './components/BloomLogo';
 import ContactPreferences from './components/ContactPreferences';
 import { AnnualEnrollmentBanner } from './components/AnnouncementBanner';
@@ -62,6 +63,21 @@ const Navigation = () => {
         }}
       >
         Actions
+      </Button>
+      <Button
+        component={Link}
+        to="/coverage-calculator"
+        startIcon={<Calculate />}
+        color="inherit"
+        sx={{
+          mx: 1,
+          fontWeight: isActive('/coverage-calculator') ? 700 : 400,
+          borderBottom: isActive('/coverage-calculator') ? '2px solid white' : '2px solid transparent',
+          borderRadius: 0,
+          pb: 0.5,
+        }}
+      >
+        Coverage Calculator
       </Button>
     </>
   );
@@ -182,6 +198,7 @@ function AppContent() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/policy/:id" element={<PolicyDetails />} />
           <Route path="/actions" element={<Actions />} />
+          <Route path="/coverage-calculator" element={<CoverageCalculatorPage />} />
           <Route path="/illustration/:id" element={<IllustrationDetails />} />
         </Routes>
       </Box>

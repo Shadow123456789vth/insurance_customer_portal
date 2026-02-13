@@ -32,7 +32,6 @@ import {
 } from '@mui/icons-material';
 import type { Policy, CustomerAction } from '../types/policy';
 import { policyApi, actionApi } from '../services/mockApi';
-import CoverageCalculator from '../components/CoverageCalculator';
 // import ClaimTracker from '../components/ClaimTracker'; // Uncomment when needed
 
 const Dashboard = () => {
@@ -128,6 +127,18 @@ const Dashboard = () => {
   const totalCoverage = policies.reduce((sum, p) => sum + p.coverageAmount, 0);
   const totalPremium = policies.reduce((sum, p) => sum + p.premium, 0);
 
+  // Personalized greeting
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
+
+  // Get user's first name (would come from auth context in real app)
+  const userName = 'Sarah'; // In production, get from user context
+  const greeting = `${getTimeBasedGreeting()}, ${userName}!`;
+
   if (loading) {
     return (
       <Box
@@ -194,7 +205,7 @@ const Dashboard = () => {
                   fontFamily: '"Roboto Slab", serif',
                 }}
               >
-                Welcome back! 👋
+                {greeting} 👋
               </Typography>
               <Typography
                 variant="h6"
@@ -482,18 +493,6 @@ const Dashboard = () => {
               );
             })}
           </Box>
-        </Box>
-
-        {/* Coverage Calculator Section */}
-        <Box sx={{ mt: 4 }}>
-          <CoverageCalculator
-            currentCoverage={totalCoverage}
-            onRecommendationAccept={(amount) => {
-              console.log('Get quote for:', amount);
-              // In real app, would navigate to quote request page
-              alert(`Great! We'll help you get a quote for ${formatCurrency(amount)} in coverage.`);
-            }}
-          />
         </Box>
 
         {/* Mock Claim Tracker (if you have an active claim) */}

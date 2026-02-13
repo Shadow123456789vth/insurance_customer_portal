@@ -136,24 +136,24 @@ const CoverageCalculator = ({ currentCoverage = 0, onRecommendationAccept }: Cov
 
         {/* Results Summary */}
         <Box sx={{ mt: 3, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
-          <Paper elevation={0} sx={{ p: 2, bgcolor: 'rgba(255, 255, 255, 0.15)' }}>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
+          <Paper elevation={0} sx={{ p: 2, bgcolor: 'white', color: '#1B75BB' }}>
+            <Typography variant="caption" color="text.secondary" fontWeight={600}>
               Recommended Coverage
             </Typography>
             <Typography variant="h5" fontWeight={700}>
               {formatCurrency(recommendedCoverage)}
             </Typography>
           </Paper>
-          <Paper elevation={0} sx={{ p: 2, bgcolor: 'rgba(255, 255, 255, 0.15)' }}>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
+          <Paper elevation={0} sx={{ p: 2, bgcolor: 'white', color: '#1B75BB' }}>
+            <Typography variant="caption" color="text.secondary" fontWeight={600}>
               Current Coverage
             </Typography>
             <Typography variant="h5" fontWeight={700}>
               {formatCurrency(currentCoverage)}
             </Typography>
           </Paper>
-          <Paper elevation={0} sx={{ p: 2, bgcolor: isUnderinsured ? 'rgba(208, 46, 46, 0.2)' : 'rgba(139, 197, 63, 0.2)' }}>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
+          <Paper elevation={0} sx={{ p: 2, bgcolor: isUnderinsured ? '#FFF5E6' : '#E8F5E9', color: isUnderinsured ? '#D02E2E' : '#8BC53F' }}>
+            <Typography variant="caption" color="text.secondary" fontWeight={600}>
               {isUnderinsured ? 'Coverage Gap' : 'Coverage Status'}
             </Typography>
             <Typography variant="h5" fontWeight={700}>
