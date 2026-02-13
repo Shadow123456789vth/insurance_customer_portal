@@ -30,12 +30,12 @@ const AnnouncementBanner = ({ message, ctaButtons, onDismiss }: AnnouncementBann
   return (
     <Box
       sx={{
-        bgcolor: '#1976d2',
+        bgcolor: '#8BC53F',
         color: 'white',
         py: 1.5,
         position: 'relative',
         borderBottom: '2px solid',
-        borderColor: 'primary.dark',
+        borderColor: '#7AB32F',
       }}
     >
       <Container maxWidth="lg">
